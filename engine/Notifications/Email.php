@@ -316,10 +316,21 @@ class Email {
         {
             $mailer->isSMTP();
             $mailer->Host = $this->config['smtp_host'];
-            $mailer->SMTPAuth = TRUE;
-            $mailer->Username = $this->config['smtp_user'];
-            $mailer->Password = $this->config['smtp_pass'];
-            $mailer->SMTPSecure = $this->config['smtp_crypto'];
+            if ($this->config['smtp_user'] !== '') {
+                $mailer->SMTPAuth = TRUE;
+                $mailer->Username = $this->config['smtp_user'];
+                $mailer->Password = $this->config['smtp_pass'];
+            } else {
+                $mailer->SMTPAuth = FALSE;
+            }
+            if ($this->config['smtp_crypto'] !== null) {
+                $mailer->SMTPSecure = $this->config['smtp_crypto'];
+            } else {
+                $mailer->SMTPAutoTLS = FALSE;
+            }
+            if ($this->config['smtp_debug'] !== null) {
+                $mailer->SMTPDebug = $this->config['smtp_debug'];
+            }
             $mailer->Port = $this->config['smtp_port'];
         }
 
